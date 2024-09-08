@@ -19,7 +19,7 @@ Future<dynamic> logoutBottomSheet(BuildContext context) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GradientBtn(
+                  CustomeBtn(
                     text: "Cancel",
                     borderColor: Kolors.kDark,
                     btnColor: Kolors.kWhite,
@@ -28,7 +28,7 @@ Future<dynamic> logoutBottomSheet(BuildContext context) {
                     radius: 16,
                     btnWidth: ScreenUtil().screenWidth / 2.2,
                   ),
-                  GradientBtn(
+                  CustomeBtn(
                     text: "Submit",
                     onTap: () {},
                     btnHeight: 35.h,

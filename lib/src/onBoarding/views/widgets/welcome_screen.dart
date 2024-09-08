@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center, style: appStyle(11, Kolors.kGray, FontWeight.normal)),
           ),
           SizedBox(height: 20.h),
-          GradientBtn(
+          CustomeBtn(
               text: AppText.kGetStarted,
               onTap: () {
                 ///TODO
