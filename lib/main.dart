@@ -1,8 +1,11 @@
 import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/environment.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
+import 'package:fashion_django/src/categories/controllers/category_notifier.dart';
 import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
+import 'package:fashion_django/src/home/controllers/home_tabs_notifier.dart';
 import 'package:fashion_django/src/onBoarding/controllers/onBoarding_notifier.dart';
+import 'package:fashion_django/src/products/controllers/product_notifier.dart';
 import 'package:fashion_django/src/splashscreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,6 +21,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => OnBoardingNotifier()),
       ChangeNotifierProvider(create: (_) => BottomTabNotifier()),
+      ChangeNotifierProvider(create: (_) => CategoryNotifier()),
+      ChangeNotifierProvider(create: (_) => HomeTabNotifier()),
+      ChangeNotifierProvider(create: (_) => ProductNotifier()),
     ],
     child: const MyApp(),
   ));
@@ -26,7 +32,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of your application. ------------------
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
