@@ -11,9 +11,10 @@ class AppText {
   static const String kVerify = 'Verification Code';
   static const String kVerifyText = 'Please enter the code we just sent to email';
   static const String kSearch = 'Search';
+  static const String kCartErrorText = 'Please select size and color first.';
 
   static const String kProfilePic =
-      'https://d326fntlu7tb1e.cloudfront.net/uploads/0856609b-21e8-4e73-85cb-1f9a93de81f4-avatar.png';
+      'https://firebasestorage.googleapis.com/v0/b/e-commerce-app-a468c.appspot.com/o/Images%2F2.png?alt=media&token=ea94edb0-7a83-466e-a1d6-fda3dad17ae5';
 
   static const String kCollection = 'New Collection';
   static const String kPolicy = 'Privacy Policy';

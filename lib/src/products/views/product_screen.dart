@@ -1,10 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fashion_django/common/services/storage.dart';
+import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/back_button.dart';
+import 'package:fashion_django/common/widgets/error_modal.dart';
+import 'package:fashion_django/common/widgets/login_bottom_sheet.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
 import 'package:fashion_django/src/products/controllers/product_notifier.dart';
+import 'package:fashion_django/src/products/views/widgets/product_bottom_bar.dart';
+import 'package:fashion_django/src/products/views/widgets/product_colors_sel.dart';
+import 'package:fashion_django/src/products/views/widgets/product_sizes_selection.dart';
 import 'package:fashion_django/src/products/views/widgets/similar_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -23,6 +30,7 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? accessToken = Storage().getString("accessToken");
     return Consumer<ProductNotifier>(
       builder: (context, provider, child) {
         return Scaffold(
@@ -144,13 +152,18 @@ class ProductScreen extends StatelessWidget {
                 child: ReusableText(text: "Select sizes", style: appStyle(16, Kolors.kDark, FontWeight.w600)),
               )),
               SliverToBoxAdapter(child: SizedBox(height: 10.h)),
+              SliverToBoxAdapter(child: ProductSizesWidget()),
+              SliverToBoxAdapter(child: SizedBox(height: 15.h)),
 
+              // Select Color
               SliverToBoxAdapter(
                   child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: ReusableText(text: "Select Color", style: appStyle(16, Kolors.kDark, FontWeight.w600)),
               )),
               SliverToBoxAdapter(child: SizedBox(height: 10.h)),
+              SliverToBoxAdapter(child: ProductColorsWidget()),
+              SliverToBoxAdapter(child: SizedBox(height: 15.h)),
 
               SliverToBoxAdapter(
                   child: Padding(
@@ -167,6 +180,19 @@ class ProductScreen extends StatelessWidget {
               )),
               SliverToBoxAdapter(child: SizedBox(height: 10.h)),
             ],
+          ),
+          bottomNavigationBar: ProductBottomBar(
+            price: provider.product!.price.toStringAsFixed(2),
+            onTap: () {
+              if (accessToken == null) {
+                loginBottomSheet(context);
+              } else if (provider.color == "" || provider.size == "") {
+                showErrorPopup(context, AppText.kCartErrorText, "Error Adding to Cart", true);
+              } else {
+                ///TODO
+                print("Go for checkout");
+              }
+            },
           ),
         );
       },

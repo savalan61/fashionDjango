@@ -1,10 +1,9 @@
 import 'package:fashion_django/const/resource.dart';
 import 'package:fashion_django/src/categories/models/categories_model.dart';
-import 'package:fashion_django/src/products/models/product_model.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../common/utils/kcolors.dart';
+import '../src/products/models/product_model.dart';
 
 LinearGradient kGradient = const LinearGradient(
   begin: Alignment.topLeft,
@@ -228,7 +227,7 @@ final List<ProductModel> products = [
       "https://media.cnn.com/api/v1/images/stellar/prod/220210051008-04-lv-virgil-abloh.jpg?q=w_2000,c_fill/f_webp",
       "https://media.cnn.com/api/v1/images/stellar/prod/220210051008-04-lv-virgil-abloh.jpg?q=w_2000,c_fill/f_webp"
     ],
-    sizes: ["7", "8", "9", "10", "11"],
+    sizes: ["7", "8", "9"],
     createdAt: DateTime.parse("2024-06-06T07:49:15Z"),
     category: 3,
     brand: 1,
@@ -246,7 +245,7 @@ final List<ProductModel> products = [
       "https://media.cnn.com/api/v1/images/stellar/prod/220210051008-04-lv-virgil-abloh.jpg?q=w_2000,c_fill/f_webp",
       "https://media.cnn.com/api/v1/images/stellar/prod/220210051008-04-lv-virgil-abloh.jpg?q=w_2000,c_fill/f_webp"
     ],
-    sizes: ["7", "8", "9", "10", "11"],
+    sizes: ["7", "8", "9", "10", "11", "12", "13"],
     createdAt: DateTime.parse("2024-06-06T07:55:20Z"),
     category: 3,
     brand: 1,

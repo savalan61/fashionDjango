@@ -6,6 +6,9 @@ import 'package:fashion_django/src/categories/views/category_screen.dart';
 import 'package:fashion_django/src/notification/views/notification_screen.dart';
 import 'package:fashion_django/src/onBoarding/views/onBoarding_screen.dart';
 import 'package:fashion_django/src/products/views/product_screen.dart';
+import 'package:fashion_django/src/profile/views/orders_screen.dart';
+import 'package:fashion_django/src/profile/views/policy_screen.dart';
+import 'package:fashion_django/src/profile/views/shipping_address_screen.dart';
 import 'package:fashion_django/src/search/views/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -35,10 +38,10 @@ final GoRouter _router = GoRouter(
     //   path: '/review',
     //   builder: (context, state) => const ReviewsPage(),
     // ),
-    // GoRoute(
-    //   path: '/policy',
-    //   builder: (context, state) => const PolicyPage(),
-    // ),
+    GoRoute(
+      path: '/policy',
+      builder: (context, state) => const PolicyScreen(),
+    ),
     // GoRoute(
     //   path: '/verification',
     //   builder: (context, state) => const VerificationPage(),
@@ -51,10 +54,10 @@ final GoRouter _router = GoRouter(
     //   path: '/help',
     //   builder: (context, state) => const HelpCenterPage(),
     // ),
-    // GoRoute(
-    //   path: '/orders',
-    //   builder: (context, state) => const OrdersPage(),
-    // ),
+    GoRoute(
+      path: '/orders',
+      builder: (context, state) => const OrdersScreen(),
+    ),
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginPage(),
@@ -77,10 +80,10 @@ final GoRouter _router = GoRouter(
     //   builder: (context, state) => const AddAddress(),
     // ),
     //
-    // GoRoute(
-    //   path: '/addresses',
-    //   builder: (context, state) => const AddressesListPage(),
-    // ),
+    GoRoute(
+      path: '/addresses',
+      builder: (context, state) => const ShippingAddressScreen(),
+    ),
     //
     GoRoute(
       path: '/notifications',
