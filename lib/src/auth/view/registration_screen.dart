@@ -7,10 +7,15 @@ import 'package:fashion_django/common/widgets/custom_button.dart';
 import 'package:fashion_django/common/widgets/email_textfield.dart';
 import 'package:fashion_django/common/widgets/password_field.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/src/auth/models/signUp_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../controllers/auth_notifier.dart';
+import '../models/signIn_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -85,13 +90,28 @@ class _LoginScreenState extends State<RegistrationScreen> {
                 SizedBox(height: 20.h),
 
                 /// Signup Button
-                CustomeBtn(
-                  text: "S I G N U P",
-                  btnWidth: ScreenUtil().screenWidth,
-                  btnHeight: 40,
-                  radius: 20,
-                  onTap: () {},
-                )
+                context.watch<AuthNotifier>().isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Kolors.kPrimary,
+                          valueColor: AlwaysStoppedAnimation<Color>(Kolors.kWhite),
+                        ),
+                      )
+                    : CustomeBtn(
+                        text: "S I G N U P",
+                        btnWidth: ScreenUtil().screenWidth,
+                        btnHeight: 40,
+                        radius: 20,
+                        onTap: () {
+                          SignUpModel userModel = SignUpModel(
+                              username: _usernameCtrl.text.trim(),
+                              password: _passwordCtrl.text.trim(),
+                              email: _emailCtrl.text.trim());
+
+                          String userString = signUpModelToJson(userModel);
+                          context.read<AuthNotifier>().signInFunction(userString, context);
+                        },
+                      )
               ],
             ),
           )

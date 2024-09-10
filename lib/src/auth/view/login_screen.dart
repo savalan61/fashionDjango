@@ -7,10 +7,13 @@ import 'package:fashion_django/common/widgets/custom_button.dart';
 import 'package:fashion_django/common/widgets/email_textfield.dart';
 import 'package:fashion_django/common/widgets/password_field.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/src/auth/controllers/auth_notifier.dart';
+import 'package:fashion_django/src/auth/models/signIn_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -78,13 +81,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20.h),
 
                 /// Login Button
-                CustomeBtn(
-                  text: "L O G I N",
-                  btnWidth: ScreenUtil().screenWidth,
-                  btnHeight: 40,
-                  radius: 20,
-                  onTap: () {},
-                )
+                context.watch<AuthNotifier>().isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Kolors.kPrimary,
+                          valueColor: AlwaysStoppedAnimation<Color>(Kolors.kWhite),
+                        ),
+                      )
+                    : CustomeBtn(
+                        text: "L O G I N",
+                        btnWidth: ScreenUtil().screenWidth,
+                        btnHeight: 40,
+                        radius: 20,
+                        onTap: () {
+                          SigInModel userModel =
+                              SigInModel(username: _usernameCtrl.text.trim(), password: _passwordCtrl.text.trim());
+
+                          String userString = signInModelToJson(userModel);
+                          context.read<AuthNotifier>().signInFunction(userString, context);
+                        },
+                      )
               ],
             ),
           )

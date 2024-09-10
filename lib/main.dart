@@ -1,6 +1,7 @@
 import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/environment.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
+import 'package:fashion_django/src/auth/controllers/auth_notifier.dart';
 import 'package:fashion_django/src/auth/controllers/password_notifier.dart';
 import 'package:fashion_django/src/categories/controllers/category_notifier.dart';
 import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
@@ -17,6 +18,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: Environment.fileName);
+  print('API_BASE_URL: ${Environment.appBaseUrl}');
   await GetStorage.init();
   runApp(MultiProvider(
     providers: [
@@ -26,6 +28,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => HomeTabNotifier()),
       ChangeNotifierProvider(create: (_) => ProductNotifier()),
       ChangeNotifierProvider(create: (_) => PasswordNotifier()),
+      ChangeNotifierProvider(create: (_) => AuthNotifier()),
     ],
     child: const MyApp(),
   ));

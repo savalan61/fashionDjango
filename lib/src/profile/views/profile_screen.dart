@@ -88,7 +88,10 @@ class ProfileScreen extends StatelessWidget {
               text: "Logout".toUpperCase(),
               btnColor: Kolors.kRed,
               btnHeight: 35.h,
-              onTap: () {},
+              onTap: () {
+                Storage().removeKey("accessToken");
+                context.go("/home");
+              },
             ),
           ),
         ],
