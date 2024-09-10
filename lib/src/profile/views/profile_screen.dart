@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fashion_django/common/utils/app_routes.dart';
+import 'package:fashion_django/common/services/storage.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/help_bottom_sheet.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/src/auth/view/login_screen.dart';
 import 'package:fashion_django/src/profile/views/widgets/profile_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? accessToken = Storage().getString("accessToken");
+    if (accessToken == null) {
+      return LoginScreen();
+    }
     return Scaffold(
       body: Column(
         children: [

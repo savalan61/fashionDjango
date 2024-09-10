@@ -15,7 +15,7 @@ class OrdersScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         leading: const AppBackButton(),
         centerTitle: true,
-        title: ReusableText(text: "Orders Screen", style: appStyle(16, Kolors.kPrimary, FontWeight.bold)),
+        title: ReusableText(text: "Orders", style: appStyle(16, Kolors.kPrimary, FontWeight.bold)),
       ),
     );
   }

@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element, prefer_const_constructors
 
 import 'package:fashion_django/src/auth/view/login_screen.dart';
+import 'package:fashion_django/src/auth/view/registration_screen.dart';
 import 'package:fashion_django/src/categories/views/categories_screen.dart';
 import 'package:fashion_django/src/categories/views/category_screen.dart';
 import 'package:fashion_django/src/notification/views/notification_screen.dart';
@@ -60,12 +61,12 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => LoginPage(),
+      builder: (context, state) => LoginScreen(),
     ),
-    // GoRoute(
-    //   path: '/register',
-    //   builder: (context, state) => const RegistrationPage(),
-    // ),
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => const RegistrationScreen(),
+    ),
     GoRoute(
       path: '/categories',
       builder: (context, state) => const CategoriesScreen(),

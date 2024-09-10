@@ -12,22 +12,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegistrationScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<RegistrationScreen> {
   final TextEditingController _usernameCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   @override
   void dispose() {
     super.dispose();
     _usernameCtrl.dispose();
     _passwordCtrl.dispose();
+    _emailCtrl.dispose();
     _focusNode.dispose();
   }
 
@@ -35,13 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Kolors.kOffWhite,
-      appBar: AppBar(
-          leading: AppBackButton(
-            onTap: () => context.go("/home"),
-          ),
-          centerTitle: true,
-          backgroundColor: Kolors.kOffWhite,
-          elevation: 0),
+      appBar: AppBar(leading: AppBackButton(), centerTitle: true, backgroundColor: Kolors.kOffWhite, elevation: 0),
       body: ListView(
         children: [
           SizedBox(height: 160.h),
@@ -64,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 /// User Name
                 EmailTextField(
                   radius: 25,
-                  focusNode: _focusNode,
                   hintText: "User Name",
                   controller: _usernameCtrl,
                   prefixIcon: Icon(CupertinoIcons.profile_circled, size: 20, color: Kolors.kGray),
@@ -73,13 +68,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 20.h),
 
+                /// Email
+                EmailTextField(
+                  radius: 25,
+                  focusNode: _focusNode,
+                  hintText: "Email",
+                  controller: _emailCtrl,
+                  prefixIcon: Icon(CupertinoIcons.mail, size: 20, color: Kolors.kGray),
+                  keyboardType: TextInputType.emailAddress,
+                  onEditingComplete: () => FocusScope.of(context).requestFocus(_focusNode),
+                ),
+                SizedBox(height: 20.h),
+
                 /// Password
                 PasswordField(controller: _passwordCtrl, focusNode: _focusNode, radius: 25),
                 SizedBox(height: 20.h),
 
-                /// Login Button
+                /// Signup Button
                 CustomeBtn(
-                  text: "L O G I N",
+                  text: "S I G N U P",
                   btnWidth: ScreenUtil().screenWidth,
                   btnHeight: 40,
                   radius: 20,
@@ -94,10 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
         height: 130.h,
         child: GestureDetector(
             onTap: () {
-              context.push("/register");
+              context.push("/login");
             },
             child: ReusableText(
-              text: "Don't have an account? Register now. ",
+              text: "Have an account already? Login now. ",
               style: appStyle(12, Colors.blue, FontWeight.normal),
               textAlign: TextAlign.center,
             )),

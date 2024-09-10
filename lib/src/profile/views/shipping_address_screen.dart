@@ -15,7 +15,7 @@ class ShippingAddressScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         leading: const AppBackButton(),
         centerTitle: true,
-        title: ReusableText(text: "Shipping Address Screen", style: appStyle(16, Kolors.kPrimary, FontWeight.bold)),
+        title: ReusableText(text: "Shipping Address", style: appStyle(16, Kolors.kPrimary, FontWeight.bold)),
       ),
     );
   }
