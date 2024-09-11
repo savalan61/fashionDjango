@@ -1,29 +1,37 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fashion_django/common/services/storage.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/help_bottom_sheet.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/src/auth/controllers/auth_state.dart';
 import 'package:fashion_django/src/auth/view/login_screen.dart';
+import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
 import 'package:fashion_django/src/profile/views/widgets/profile_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/utils/kcolors.dart';
 import '../../../common/widgets/custom_button.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    String? accessToken = Storage().getString("accessToken");
-    if (accessToken == null) {
-      return LoginScreen();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authNotifierProvider);
+
+    // اگر کاربر وارد نشده است، به صفحه ورود هدایت کنید
+    if (!authState.isLoggedIn) {
+      return const LoginScreen();
     }
+
+    final currentUser = authState.currentUser;
+
     return Scaffold(
       body: Column(
         children: [
@@ -36,18 +44,25 @@ class ProfileScreen extends StatelessWidget {
                 backgroundImage: NetworkImage(AppText.kProfilePic),
               ),
               SizedBox(height: 15.h),
-              ReusableText(text: "ArsenAlipour@gmail.com", style: appStyle(11, Kolors.kGray, FontWeight.normal)),
+              ReusableText(
+                text: currentUser.email,
+                style: appStyle(11, Kolors.kGray, FontWeight.normal),
+              ),
               SizedBox(height: 5.h),
               Container(
-                decoration: BoxDecoration(color: Kolors.kOffWhite, borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(
+                  color: Kolors.kOffWhite,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 padding: EdgeInsets.symmetric(horizontal: 15.w),
-                child: ReusableText(text: "Arsen Ali pour", style: appStyle(14, Kolors.kDark, FontWeight.w600)),
-              )
+                child: ReusableText(
+                  text: currentUser.username,
+                  style: appStyle(14, Kolors.kDark, FontWeight.w600),
+                ),
+              ),
             ],
           ),
           SizedBox(height: 30.h),
-
-          /// -------------------- Details of Profile ------------------------
           Container(
             color: Kolors.kOffWhite,
             child: Column(
@@ -55,23 +70,17 @@ class ProfileScreen extends StatelessWidget {
                 ProfileTileWidget(
                   title: "My Orders",
                   leadingIconData: Octicons.checklist,
-                  onTap: () {
-                    context.push("/orders");
-                  },
+                  onTap: () => context.go("/orders"),
                 ),
                 ProfileTileWidget(
                   title: "Shipping Address",
                   leadingIconData: MaterialIcons.location_pin,
-                  onTap: () {
-                    context.push("/addresses");
-                  },
+                  onTap: () => context.go("/addresses"),
                 ),
                 ProfileTileWidget(
                   title: "Privacy Policy",
                   leadingIconData: MaterialIcons.policy,
-                  onTap: () {
-                    context.push("/policy");
-                  },
+                  onTap: () => context.go("/policy"),
                 ),
                 ProfileTileWidget(
                   title: "Help Center",
@@ -81,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: EdgeInsets.only(bottom: 30.h),
             child: CustomeBtn(
@@ -89,7 +98,8 @@ class ProfileScreen extends StatelessWidget {
               btnColor: Kolors.kRed,
               btnHeight: 35.h,
               onTap: () {
-                Storage().removeKey("accessToken");
+                ref.read(authNotifierProvider.notifier).logout(context);
+                context.read<BottomTabNotifier>().setTabIndex(0);
                 context.go("/home");
               },
             ),

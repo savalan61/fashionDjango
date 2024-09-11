@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors
 
 import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
@@ -7,44 +7,43 @@ import 'package:fashion_django/common/widgets/custom_button.dart';
 import 'package:fashion_django/common/widgets/email_textfield.dart';
 import 'package:fashion_django/common/widgets/password_field.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
-import 'package:fashion_django/src/auth/controllers/auth_notifier.dart';
 import 'package:fashion_django/src/auth/models/signIn_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+import '../controllers/auth_state.dart';
+
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final TextEditingController _usernameCtrl = TextEditingController();
+    final TextEditingController _passwordCtrl = TextEditingController();
+    final FocusNode _focusNode = FocusNode();
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _usernameCtrl = TextEditingController();
-  final TextEditingController _passwordCtrl = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  @override
-  void dispose() {
-    super.dispose();
-    _usernameCtrl.dispose();
-    _passwordCtrl.dispose();
-    _focusNode.dispose();
-  }
+    final authState = ref.watch(authNotifierProvider);
+    final authNotifier = ref.read(authNotifierProvider.notifier);
 
-  @override
-  Widget build(BuildContext context) {
+    if (authState.isLoggedIn) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go("/home");
+      });
+    }
+
     return Scaffold(
       backgroundColor: Kolors.kOffWhite,
       appBar: AppBar(
-          leading: AppBackButton(
-            onTap: () => context.go("/home"),
-          ),
-          centerTitle: true,
-          backgroundColor: Kolors.kOffWhite,
-          elevation: 0),
+        leading: AppBackButton(
+          onTap: () => context.go("/home"),
+        ),
+        centerTitle: true,
+        backgroundColor: Kolors.kOffWhite,
+        elevation: 0,
+      ),
       body: ListView(
         children: [
           SizedBox(height: 160.h),
@@ -81,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20.h),
 
                 /// Login Button
-                context.watch<AuthNotifier>().isLoading
+                authState.isLoading
                     ? Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Kolors.kPrimary,
@@ -94,11 +93,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         btnHeight: 40,
                         radius: 20,
                         onTap: () {
-                          SigInModel userModel =
-                              SigInModel(username: _usernameCtrl.text.trim(), password: _passwordCtrl.text.trim());
+                          SigInModel userModel = SigInModel(
+                            username: _usernameCtrl.text.trim(),
+                            password: _passwordCtrl.text.trim(),
+                          );
 
                           String userString = signInModelToJson(userModel);
-                          context.read<AuthNotifier>().signInFunction(userString, context);
+                          authNotifier.signInFunction(userString, context);
                         },
                       )
               ],
@@ -109,14 +110,15 @@ class _LoginScreenState extends State<LoginScreen> {
       bottomNavigationBar: SizedBox(
         height: 130.h,
         child: GestureDetector(
-            onTap: () {
-              context.push("/register");
-            },
-            child: ReusableText(
-              text: "Don't have an account? Register now. ",
-              style: appStyle(12, Colors.blue, FontWeight.normal),
-              textAlign: TextAlign.center,
-            )),
+          onTap: () {
+            context.push("/register");
+          },
+          child: ReusableText(
+            text: "Don't have an account? Register now. ",
+            style: appStyle(12, Colors.blue, FontWeight.normal),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }

@@ -8,10 +8,10 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? accessToken = Storage().getString("accessToken");
-    if (accessToken == null) {
-      return LoginScreen();
-    }
+    // String? accessToken = Storage().getString("accessToken");
+    // if (accessToken == null) {
+    //   return LoginScreen();
+    // }
     return Scaffold(
       appBar: AppBar(
         title: Text("Cart Screen"),

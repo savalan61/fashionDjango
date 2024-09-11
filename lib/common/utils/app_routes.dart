@@ -65,7 +65,7 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: '/register',
-      builder: (context, state) => const RegistrationScreen(),
+      builder: (context, state) => RegistrationScreen(),
     ),
     GoRoute(
       path: '/categories',

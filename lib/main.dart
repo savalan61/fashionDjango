@@ -11,27 +11,33 @@ import 'package:fashion_django/src/products/controllers/product_notifier.dart';
 import 'package:fashion_django/src/splashscreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: Environment.fileName);
   print('API_BASE_URL: ${Environment.appBaseUrl}');
   await GetStorage.init();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => OnBoardingNotifier()),
-      ChangeNotifierProvider(create: (_) => BottomTabNotifier()),
-      ChangeNotifierProvider(create: (_) => CategoryNotifier()),
-      ChangeNotifierProvider(create: (_) => HomeTabNotifier()),
-      ChangeNotifierProvider(create: (_) => ProductNotifier()),
-      ChangeNotifierProvider(create: (_) => PasswordNotifier()),
-      ChangeNotifierProvider(create: (_) => AuthNotifier()),
-    ],
-    child: const MyApp(),
-  ));
+
+  runApp(
+    ProviderScope(
+      child: provider.MultiProvider(
+        providers: [
+          provider.ChangeNotifierProvider(create: (_) => OnBoardingNotifier()),
+          provider.ChangeNotifierProvider(create: (_) => BottomTabNotifier()),
+          provider.ChangeNotifierProvider(create: (_) => CategoryNotifier()),
+          provider.ChangeNotifierProvider(create: (_) => HomeTabNotifier()),
+          provider.ChangeNotifierProvider(create: (_) => ProductNotifier()),
+          provider.ChangeNotifierProvider(create: (_) => PasswordNotifier()),
+          // provider.ChangeNotifierProvider(create: (_) => AuthNotifier()),
+        ],
+        child: const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
