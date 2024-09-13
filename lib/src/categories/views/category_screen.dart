@@ -2,9 +2,10 @@ import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/back_button.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
-import 'package:fashion_django/src/categories/controllers/category_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../viewModel/category_riverpod.dart';
 
 class CategoryScreen extends ConsumerWidget {
   const CategoryScreen({super.key});
