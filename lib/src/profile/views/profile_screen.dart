@@ -4,19 +4,19 @@ import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/help_bottom_sheet.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
-import 'package:fashion_django/src/auth/controllers/auth_state.dart';
 import 'package:fashion_django/src/auth/view/login_screen.dart';
 import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
 import 'package:fashion_django/src/profile/views/widgets/profile_tile_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/utils/kcolors.dart';
 import '../../../common/widgets/custom_button.dart';
+import '../../auth/controllers/riverpod/auth_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -24,13 +24,11 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authNotifierProvider);
+    final currentUser = authState.currentUser;
 
-    // اگر کاربر وارد نشده است، به صفحه ورود هدایت کنید
     if (!authState.isLoggedIn) {
       return const LoginScreen();
     }
-
-    final currentUser = authState.currentUser;
 
     return Scaffold(
       body: Column(

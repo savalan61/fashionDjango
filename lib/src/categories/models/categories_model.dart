@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../../../const/constants.dart';
+
 class CategoryModel {
   final int id;
   final String title;
@@ -22,6 +24,10 @@ class CategoryModel {
         "title": title,
         "imageUrl": imageUrl,
       };
+
+  factory CategoryModel.empty() {
+    return CategoryModel(id: 0, title: "All", imageUrl: images[0]);
+  }
 }
 
 List<CategoryModel> categoriesFromJson(String str) =>

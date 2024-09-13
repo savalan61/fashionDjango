@@ -5,21 +5,25 @@ import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/back_button.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
-import 'package:fashion_django/const/constants.dart';
-import 'package:fashion_django/src/categories/controllers/category_notifier.dart';
+import 'package:fashion_django/src/categories/controllers/category_riverpod.dart';
 import 'package:fashion_django/src/categories/models/categories_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-class CategoriesScreen extends StatelessWidget {
+import '../controllers/categories_riverpod.dart';
+
+class CategoriesScreen extends ConsumerWidget {
   const CategoriesScreen({super.key});
 
+  void setCat(CategoryModel cat, WidgetRef ref) => ref.read(catNotifierProvider.notifier).setIdAndCsat(cat);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<CategoryModel> cats = ref.watch(catsNotifierProvider);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -28,13 +32,13 @@ class CategoriesScreen extends StatelessWidget {
           leading: const AppBackButton(),
         ),
         body: ListView.builder(
-          itemCount: categories.length,
+          itemCount: cats.length,
           itemBuilder: (context, index) {
-            CategoryModel cat = categories[index];
+            CategoryModel cat = cats[index];
             return ListTile(
               onTap: () {
                 // Got Category Page
-                context.read<CategoryNotifier>().setCategoryAndId(category: cat.title, id: cat.id);
+                setCat(cat, ref);
                 context.push("/category");
                 // router.push("/category");
               },

@@ -1,9 +1,6 @@
 import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/environment.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
-import 'package:fashion_django/src/auth/controllers/auth_notifier.dart';
-import 'package:fashion_django/src/auth/controllers/password_notifier.dart';
-import 'package:fashion_django/src/categories/controllers/category_notifier.dart';
 import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
 import 'package:fashion_django/src/home/controllers/home_tabs_notifier.dart';
 import 'package:fashion_django/src/onBoarding/controllers/onBoarding_notifier.dart';
@@ -28,11 +25,8 @@ void main() async {
         providers: [
           provider.ChangeNotifierProvider(create: (_) => OnBoardingNotifier()),
           provider.ChangeNotifierProvider(create: (_) => BottomTabNotifier()),
-          provider.ChangeNotifierProvider(create: (_) => CategoryNotifier()),
           provider.ChangeNotifierProvider(create: (_) => HomeTabNotifier()),
           provider.ChangeNotifierProvider(create: (_) => ProductNotifier()),
-          provider.ChangeNotifierProvider(create: (_) => PasswordNotifier()),
-          // provider.ChangeNotifierProvider(create: (_) => AuthNotifier()),
         ],
         child: const MyApp(),
       ),
