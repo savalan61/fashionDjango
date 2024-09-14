@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeTabs extends StatelessWidget {
-  const HomeTabs({super.key, required TabController tabController}) : _tabController = tabController;
+  const HomeTabs({required TabController tabController, super.key}) : _tabController = tabController;
   final TabController _tabController;
   @override
   Widget build(BuildContext context) {

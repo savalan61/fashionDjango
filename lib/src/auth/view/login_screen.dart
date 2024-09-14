@@ -31,7 +31,7 @@ class LoginScreen extends ConsumerWidget {
 
     if (authState.isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go("/home");
+        context.go('/home');
       });
     }
 
@@ -39,7 +39,7 @@ class LoginScreen extends ConsumerWidget {
       backgroundColor: Kolors.kOffWhite,
       appBar: AppBar(
         leading: AppBackButton(
-          onTap: () => context.go("/home"),
+          onTap: () => context.go('/home'),
         ),
         centerTitle: true,
         backgroundColor: Kolors.kOffWhite,
@@ -53,7 +53,7 @@ class LoginScreen extends ConsumerWidget {
             children: [
               SizedBox(height: 160.h),
               ReusableText(
-                text: "Best Fashion",
+                text: 'Best Fashion',
                 textAlign: TextAlign.center,
                 style: appStyle(24, Kolors.kPrimary, FontWeight.bold),
               ),
@@ -70,7 +70,7 @@ class LoginScreen extends ConsumerWidget {
                   EmailTextField(
                     radius: 25,
                     focusNode: _focusNode,
-                    hintText: "User Name",
+                    hintText: 'User Name',
                     controller: _usernameCtrl,
                     prefixIcon: Icon(CupertinoIcons.profile_circled, size: 20, color: Kolors.kGray),
                     keyboardType: TextInputType.name,
@@ -91,18 +91,18 @@ class LoginScreen extends ConsumerWidget {
                           ),
                         )
                       : CustomeBtn(
-                          text: "L O G I N",
+                          text: 'L O G I N',
                           btnWidth: ScreenUtil().screenWidth,
                           btnHeight: 40,
                           radius: 20,
                           onTap: () {
                             if (_formKey.currentState?.validate() ?? false) {
-                              SigInModel userModel = SigInModel(
+                              final SigInModel userModel = SigInModel(
                                 username: _usernameCtrl.text.trim(),
                                 password: _passwordCtrl.text.trim(),
                               );
 
-                              String userString = signInModelToJson(userModel);
+                              final String userString = signInModelToJson(userModel);
                               authNotifier.signInFunction(userString, context);
                             }
                           },
@@ -117,7 +117,7 @@ class LoginScreen extends ConsumerWidget {
         height: 130.h,
         child: GestureDetector(
           onTap: () {
-            context.push("/register");
+            context.push('/register');
           },
           child: ReusableText(
             text: "Don't have an account? Register now. ",

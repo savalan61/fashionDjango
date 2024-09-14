@@ -4,6 +4,7 @@ import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/src/home/views/home_screen.dart';
 import 'package:fashion_django/src/products/views/widgets/explore_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +34,8 @@ class WishlistScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(8.0),
-        child: ExploreProducts(),
+        //TODO
+        child: ExploreProducts(homeTabs[0]),
       ),
     );
   }

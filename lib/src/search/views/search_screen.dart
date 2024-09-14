@@ -1,5 +1,4 @@
 import 'package:fashion_django/common/utils/kcolors.dart';
-import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/back_button.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';

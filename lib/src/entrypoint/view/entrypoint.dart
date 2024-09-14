@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:provider/provider.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/src/cart/views/cart_screen.dart';
 import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
 import 'package:fashion_django/src/home/views/home_screen.dart';
 import 'package:fashion_django/src/profile/views/profile_screen.dart';
 import 'package:fashion_django/src/wishList/views/wishList_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 
 class AppEntryPoint extends StatelessWidget {
   AppEntryPoint({super.key});

@@ -9,9 +9,8 @@ final categoryRepository = CategoryRepository(http.Client());
 
 // StateNotifier
 class CatsNotifier extends StateNotifier<List<CategoryModel>> {
-  final CategoryRepository _repository;
-
   CatsNotifier(this._repository) : super([]);
+  final CategoryRepository _repository;
 
   /// Set All Categories
   void setCategories(List<CategoryModel> cats) {
@@ -44,12 +43,12 @@ final catsNotifierProvider = StateNotifierProvider<CatsNotifier, List<CategoryMo
 // Fetch Providers
 final fetchAllCatsProvider = FutureProvider<List<CategoryModel>>((ref) async {
   await ref.read(catsNotifierProvider.notifier).fetchAllCategories();
-  List<CategoryModel> cats = ref.read(catsNotifierProvider);
+  final List<CategoryModel> cats = ref.read(catsNotifierProvider);
   return cats;
 });
 
 final fetchTopCatsProvider = FutureProvider<List<CategoryModel>>((ref) async {
   await ref.read(catsNotifierProvider.notifier).fetchTopCategories();
-  List<CategoryModel> cats = ref.read(catsNotifierProvider);
+  final List<CategoryModel> cats = ref.read(catsNotifierProvider);
   return cats;
 });

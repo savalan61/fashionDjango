@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class StaggeredTileWidget extends StatelessWidget {
-  const StaggeredTileWidget({super.key, required this.i, required this.product, this.onTap});
+  const StaggeredTileWidget({required this.i, required this.product, super.key, this.onTap});
 
   final int i;
   final ProductModel product;
@@ -25,8 +25,7 @@ class StaggeredTileWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.read<ProductNotifier>().setProduct(product);
-        context.push("/product/${product.id}");
-        // router.push("/product/${product.id}");
+        context.push('/product/${product.id}');
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
@@ -79,7 +78,7 @@ class StaggeredTileWidget extends StatelessWidget {
                         const Icon(AntDesign.star, color: Kolors.kGold, size: 14),
                         SizedBox(width: 5.w),
                         ReusableText(
-                            text: product.ratings.toStringAsFixed(1),
+                            text: product.rating.toStringAsFixed(1),
                             style: appStyle(18, Kolors.kGray, FontWeight.normal))
                       ])
                     ],
@@ -91,7 +90,7 @@ class StaggeredTileWidget extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: ReusableText(
-                      text: "\$ ${product.price.toStringAsFixed(2)}",
+                      text: '\$ ${product.price.toStringAsFixed(2)}',
                       style: appStyle(17, Kolors.kDark, FontWeight.w500)))
             ],
           ),

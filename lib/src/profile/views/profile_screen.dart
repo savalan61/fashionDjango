@@ -14,6 +14,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/services/storage.dart';
 import '../../../common/utils/kcolors.dart';
 import '../../../common/widgets/custom_button.dart';
 import '../../auth/controllers/riverpod/auth_notifier.dart';
@@ -25,8 +26,9 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authNotifierProvider);
     final currentUser = authState.currentUser;
+    String? accessToken = Storage().getString("accessToken");
 
-    if (!authState.isLoggedIn) {
+    if (!authState.isLoggedIn || accessToken == null || accessToken.isEmpty) {
       return const LoginScreen();
     }
 

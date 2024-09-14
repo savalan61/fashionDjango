@@ -13,6 +13,7 @@ import 'package:fashion_django/src/products/views/widgets/product_bottom_bar.dar
 import 'package:fashion_django/src/products/views/widgets/product_colors_sel.dart';
 import 'package:fashion_django/src/products/views/widgets/product_sizes_selection.dart';
 import 'package:fashion_django/src/products/views/widgets/similar_products.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +25,7 @@ import '../../../common/utils/kcolors.dart';
 import '../../../const/constants.dart';
 
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({super.key, required this.productId});
+  const ProductScreen({required this.productId, super.key});
 
   final String productId;
 
@@ -41,7 +42,6 @@ class ProductScreen extends StatelessWidget {
                 backgroundColor: Colors.white,
                 expandedHeight: 320.h,
                 collapsedHeight: 65.h,
-                floating: false,
                 pinned: true,
                 leading: const AppBackButton(),
                 actions: [
@@ -99,7 +99,7 @@ class ProductScreen extends StatelessWidget {
                           Icon(AntDesign.star, color: Kolors.kGold, size: 14),
                           SizedBox(width: 5.w),
                           ReusableText(
-                              text: provider.product!.ratings.toStringAsFixed(1),
+                              text: provider.product!.rating.toStringAsFixed(1),
                               style: appStyle(13, Kolors.kGray, FontWeight.normal))
                         ],
                       )
@@ -159,7 +159,7 @@ class ProductScreen extends StatelessWidget {
               SliverToBoxAdapter(
                   child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: ReusableText(text: "Select Color", style: appStyle(16, Kolors.kDark, FontWeight.w600)),
+                child: ReusableText(text: 'Select Color', style: appStyle(16, Kolors.kDark, FontWeight.w600)),
               )),
               SliverToBoxAdapter(child: SizedBox(height: 10.h)),
               SliverToBoxAdapter(child: ProductColorsWidget()),
@@ -168,7 +168,7 @@ class ProductScreen extends StatelessWidget {
               SliverToBoxAdapter(
                   child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: ReusableText(text: "Similar Products", style: appStyle(16, Kolors.kDark, FontWeight.w600)),
+                child: ReusableText(text: 'Similar Products', style: appStyle(16, Kolors.kDark, FontWeight.w600)),
               )),
               SliverToBoxAdapter(child: SizedBox(height: 10.h)),
 
@@ -186,11 +186,13 @@ class ProductScreen extends StatelessWidget {
             onTap: () {
               if (accessToken == null) {
                 loginBottomSheet(context);
-              } else if (provider.color == "" || provider.size == "") {
-                showErrorPopup(context, AppText.kCartErrorText, "Error Adding to Cart", true);
+              } else if (provider.color == '' || provider.size == '') {
+                showErrorPopup(context, AppText.kCartErrorText, 'Error Adding to Cart', true);
               } else {
                 ///TODO
-                print("Go for checkout");
+                if (kDebugMode) {
+                  print('Go for checkout');
+                }
               }
             },
           ),

@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/kcolors.dart';
-import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/login_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

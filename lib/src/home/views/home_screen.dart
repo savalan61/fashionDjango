@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           SizedBox(height: 15.h),
 
           /// --------------------------------- Explore Products -------------------
-          ExploreProducts(),
+          ExploreProducts(homeTabs[_currentTabIndex])
         ],
       ),
     );
