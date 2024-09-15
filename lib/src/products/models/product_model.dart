@@ -37,9 +37,9 @@ class ProductModel {
   final String title;
   final double price;
   final String description;
-  final bool isFeatured; // تغییر به isFeatured
+  final bool isFeatured;
   final String clothesType;
-  final double rating; // تغییر به rating
+  final double rating;
   final List<String> colors;
   final List<String> imageUrls;
   final List<String> sizes;

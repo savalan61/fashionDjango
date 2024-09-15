@@ -23,7 +23,7 @@ linter:
   rules:
     # General lint rules
     prefer_const_constructors: true
-    avoid_print: true
+    #    avoid_print: true
     unnecessary_this: true
     avoid_unnecessary_containers: true
     prefer_final_fields: true
@@ -34,7 +34,7 @@ linter:
     always_declare_return_types: true
     always_put_required_named_parameters_first: true
     prefer_is_empty: true
-    prefer_single_quotes: true
+    #    prefer_single_quotes: true
 
     # Riverpod specific lint rules (as much as applicable, based on common recommendations)
     avoid_function_literals_in_foreach_calls: true

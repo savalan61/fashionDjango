@@ -72,8 +72,12 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const CategoriesScreen(),
     ),
     GoRoute(
-      path: '/category',
-      builder: (context, state) => CategoryScreen(),
+      path: '/category/:id',
+      builder: (context, state) {
+        final catId = state.pathParameters['id'];
+        // return CategoryScreen(catId: int.parse(catId!));
+        return CategoryScreen(catId: int.parse(catId!));
+      },
     ),
     //
     // GoRoute(

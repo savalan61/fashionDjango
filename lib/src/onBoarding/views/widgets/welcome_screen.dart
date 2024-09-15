@@ -1,5 +1,4 @@
 import 'package:fashion_django/common/services/storage.dart';
-import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';

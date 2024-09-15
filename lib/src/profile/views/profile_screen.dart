@@ -70,17 +70,17 @@ class ProfileScreen extends ConsumerWidget {
                 ProfileTileWidget(
                   title: "My Orders",
                   leadingIconData: Octicons.checklist,
-                  onTap: () => context.go("/orders"),
+                  onTap: () => context.push("/orders"),
                 ),
                 ProfileTileWidget(
                   title: "Shipping Address",
                   leadingIconData: MaterialIcons.location_pin,
-                  onTap: () => context.go("/addresses"),
+                  onTap: () => context.push("/addresses"),
                 ),
                 ProfileTileWidget(
                   title: "Privacy Policy",
                   leadingIconData: MaterialIcons.policy,
-                  onTap: () => context.go("/policy"),
+                  onTap: () => context.push("/policy"),
                 ),
                 ProfileTileWidget(
                   title: "Help Center",

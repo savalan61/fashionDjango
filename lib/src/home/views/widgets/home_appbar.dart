@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';

@@ -28,4 +28,28 @@ class ProductRepository {
       throw Exception('Something went wrong');
     }
   }
+
+  Future<List<ProductModel>> fetchProductsByCat(int id) async {
+    final url = '${Environment.appBaseUrl}/api/filter-products-by-category/?category=$id';
+    final res = await client.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      return productModelFromJson(res.body);
+    } else {
+      throw Exception('Failed to load top categories');
+    }
+  }
+
+  Future<List<ProductModel>> fetchSimilarProducts(int catId) async {
+    final url = '${Environment.appBaseUrl}/api/similar-products/?category=$catId';
+    final res = await client.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      final List<ProductModel> products = productModelFromJson(res.body);
+      return products;
+    } else {
+      print('Failed to load similar products. Status code: ${res.statusCode}');
+      throw Exception('Failed to load similar products');
+    }
+  }
 }
