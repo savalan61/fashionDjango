@@ -28,6 +28,7 @@ class RegistrationScreen extends ConsumerWidget {
     final authState = ref.watch(authNotifierProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Kolors.kOffWhite,
       appBar: AppBar(
         leading: AppBackButton(),

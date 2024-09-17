@@ -4,19 +4,19 @@ import 'package:fashion_django/src/onBoarding/views/widgets/onBoard_Screen_one.d
 import 'package:fashion_django/src/onBoarding/views/widgets/onBoarding_screen_tow.dart';
 import 'package:fashion_django/src/onBoarding/views/widgets/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:provider/provider.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
-class OnBoardingScreen extends StatefulWidget {
+class OnBoardingScreen extends ConsumerStatefulWidget {
   const OnBoardingScreen({super.key});
 
   @override
-  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+  ConsumerState<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
+class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   PageController? _pageController;
 
   @override
@@ -25,7 +25,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _pageController = PageController(
-          initialPage: context.read<OnBoardingNotifier>().selectedPage,
+          initialPage: ref.watch(onBoardNotifier),
         );
       });
     });
@@ -43,14 +43,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final selectedPage = context.watch<OnBoardingNotifier>().selectedPage;
+    final selectedPage = ref.watch(onBoardNotifier);
 
     return Scaffold(
       body: Stack(
         children: [
           PageView(
             controller: _pageController,
-            onPageChanged: (value) => context.read<OnBoardingNotifier>().setSelectedPage(value),
+            onPageChanged: (value) => ref.read(onBoardNotifier.notifier).setPage(value),
             children: pages,
           ),
           Positioned(
@@ -60,13 +60,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (selectedPage > 0)
                     GestureDetector(
                       onTap: () {
                         if (selectedPage > 0) {
-                          context.read<OnBoardingNotifier>().setSelectedPage(selectedPage - 1);
+                          ref.read(onBoardNotifier.notifier).setPage(selectedPage - 1);
                           _pageController?.animateToPage(
                             selectedPage - 1,
                             duration: const Duration(milliseconds: 300),
@@ -92,7 +91,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     GestureDetector(
                       onTap: () {
                         if (selectedPage < pages.length - 1) {
-                          context.read<OnBoardingNotifier>().setSelectedPage(selectedPage + 1);
+                          ref.read(onBoardNotifier.notifier).setPage(selectedPage + 1);
+
                           _pageController?.animateToPage(
                             selectedPage + 1,
                             duration: const Duration(milliseconds: 300),

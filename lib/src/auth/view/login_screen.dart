@@ -8,17 +8,21 @@ import 'package:fashion_django/common/widgets/email_textfield.dart';
 import 'package:fashion_django/common/widgets/password_field.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
 import 'package:fashion_django/src/auth/models/signIn_model.dart';
+import 'package:fashion_django/src/entrypoint/viewModel/tabs_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../const/app_routes.dart';
 import '../controllers/riverpod/auth_notifier.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
+  ///set Tab to home
+  void setTab(WidgetRef ref) => ref.read(bottomTabNotifier.notifier).setTab(0);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TextEditingController _usernameCtrl = TextEditingController();
@@ -31,15 +35,16 @@ class LoginScreen extends ConsumerWidget {
 
     if (authState.isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/home');
+        context.go(AppRoutes.home);
       });
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Kolors.kOffWhite,
       appBar: AppBar(
         leading: AppBackButton(
-          onTap: () => context.go('/home'),
+          onTap: () => context.go(AppRoutes.home),
         ),
         centerTitle: true,
         backgroundColor: Kolors.kOffWhite,
@@ -104,6 +109,7 @@ class LoginScreen extends ConsumerWidget {
 
                               final String userString = signInModelToJson(userModel);
                               authNotifier.signInFunction(userString, context);
+                              setTab(ref);
                             }
                           },
                         )
@@ -117,7 +123,7 @@ class LoginScreen extends ConsumerWidget {
         height: 130.h,
         child: GestureDetector(
           onTap: () {
-            context.push('/register');
+            context.push(AppRoutes.register);
           },
           child: ReusableText(
             text: "Don't have an account? Register now. ",

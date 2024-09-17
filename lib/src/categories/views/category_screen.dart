@@ -7,8 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../../common/services/storage.dart';
+import '../../../common/widgets/login_bottom_sheet.dart';
 import '../../products/viewModel/products_riverpod.dart';
 import '../../products/views/widgets/staggered_tile_widget.dart';
+import '../../wishList/viewModel/wishlist_notifier.dart';
 import '../viewModel/category_riverpod.dart';
 
 class CategoryScreen extends ConsumerWidget {
@@ -18,11 +21,15 @@ class CategoryScreen extends ConsumerWidget {
 
   Future<void> _refreshProducts(WidgetRef ref) async {
     await ref.refresh(fetchProductsByCategoryProvider(catId).future);
-    print("refresh");
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // final isLoggedIn = ref.watch(authNotifierProvider); // Assuming you have an authProvider to check login state
+    final String? accessToken = Storage().getString('accessToken');
+
+    final bool isLoggedIn = accessToken != null;
+
     return ref.watch(fetchProductsByCategoryProvider(catId)).when(
           data: (data) => Scaffold(
             appBar: AppBar(
@@ -33,13 +40,12 @@ class CategoryScreen extends ConsumerWidget {
                 style: appStyle(16, Kolors.kPrimary, FontWeight.bold),
               ),
               leading: const AppBackButton(),
-              actions: [ElevatedButton(onPressed: () => _refreshProducts(ref), child: const Text("Refresh"))],
             ),
             body: RefreshIndicator(
               onRefresh: () => _refreshProducts(ref),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.h),
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: StaggeredGrid.count(
                     crossAxisCount: 4,
                     mainAxisSpacing: 4,
@@ -47,14 +53,30 @@ class CategoryScreen extends ConsumerWidget {
                     children: List.generate(
                       data.length,
                       (index) {
-                        const double mainAxisCellCount = 2.4;
                         final product = data[index];
+                        final isWished = ref.watch(wishListNotifierProvider).when(
+                              data: (wishList) => wishList.any(
+                                (item) => item.product.id == product.id,
+                              ),
+                              loading: () => false,
+                              error: (_, __) => false,
+                            );
+
                         return StaggeredGridTile.count(
                           crossAxisCellCount: 2,
-                          mainAxisCellCount: mainAxisCellCount,
+                          mainAxisCellCount: 2.4,
                           child: StaggeredTileWidget(
                             i: index,
                             product: product,
+                            isWished: isWished,
+                            onTap: () {
+                              if (!isLoggedIn) {
+                                loginBottomSheet(context); // Function to show login prompt
+                              } else {
+                                // Handle wishlist toggle
+                                ref.read(wishListNotifierProvider.notifier).toggleWishList(product.id.toString());
+                              }
+                            },
                           ),
                         );
                       },

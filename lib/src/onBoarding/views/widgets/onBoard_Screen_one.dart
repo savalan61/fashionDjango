@@ -12,14 +12,14 @@ class OnboardScreenOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: ScreenUtil().screenWidth,
-      height: ScreenUtil().scaleWidth,
+      height: ScreenUtil().screenHeight,
       child: Stack(
         children: [
           Image.asset(R.ASSETS_IMAGES_EXPERIENCE_PNG, fit: BoxFit.cover),
           Positioned(
-              bottom: 200,
-              left: 30,
-              right: 30,
+              bottom: 150.h,
+              left: 30.w,
+              right: 30.w,
               child: Text(AppText.kOnboardHome,
                   style: appStyle(11, Kolors.kGray, FontWeight.normal), textAlign: TextAlign.center))
         ],

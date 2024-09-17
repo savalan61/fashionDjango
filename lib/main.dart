@@ -1,35 +1,34 @@
 import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/environment.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
-import 'package:fashion_django/src/entrypoint/controllers/bottom_tab_notifier.dart';
-import 'package:fashion_django/src/home/controllers/home_tabs_notifier.dart';
-import 'package:fashion_django/src/onBoarding/controllers/onBoarding_notifier.dart';
-import 'package:fashion_django/src/products/controllers/product_notifier.dart';
 import 'package:fashion_django/src/splashscreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart' as provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: Environment.fileName);
-  print('API_BASE_URL: ${Environment.appBaseUrl}');
-  await GetStorage.init();
+
+  // Load environment variables
+  try {
+    await dotenv.load(fileName: Environment.fileName);
+    print('API_BASE_URL: ${Environment.appBaseUrl}');
+  } catch (e) {
+    print('Failed to load environment variables: $e');
+  }
+
+  // Initialize GetStorage
+  try {
+    await GetStorage.init();
+  } catch (e) {
+    print('Failed to initialize GetStorage: $e');
+  }
 
   runApp(
-    ProviderScope(
-      child: provider.MultiProvider(
-        providers: [
-          provider.ChangeNotifierProvider(create: (_) => OnBoardingNotifier()),
-          provider.ChangeNotifierProvider(create: (_) => BottomTabNotifier()),
-          provider.ChangeNotifierProvider(create: (_) => HomeTabNotifier()),
-          provider.ChangeNotifierProvider(create: (_) => ProductNotifier()),
-        ],
-        child: const MyApp(),
-      ),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 }
@@ -37,16 +36,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application. ------------------
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    // WishListRepository(http.Client()).fetchAllWishList();
     return ScreenUtilInit(
-      designSize: screenSize,
+      designSize: const Size(375, 812),
       minTextAdapt: true,
-      splitScreenMode: false,
       useInheritedMediaQuery: true,
-      builder: (_, child) {
+      builder: (context, child) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: AppText.kAppName,
@@ -54,7 +51,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          routerConfig: router,
+          routerConfig: router, // مطمئن شوید که router به درستی تعریف شده است
         );
       },
       child: const SplashScreen(),

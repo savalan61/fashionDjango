@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OnBoardingNotifier extends ChangeNotifier {
-  int _selectedPage = 0;
+class AnBoardNotifier extends StateNotifier<int> {
+  AnBoardNotifier() : super(0);
 
-  int get selectedPage => _selectedPage;
-
-  void setSelectedPage(int page) {
-    _selectedPage = page;
-    notifyListeners();
-  }
+  void setPage(int i) => state = i;
 }
+
+final onBoardNotifier = StateNotifierProvider<AnBoardNotifier, int>((ref) => AnBoardNotifier());

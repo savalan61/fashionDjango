@@ -1,9 +1,11 @@
 import 'package:fashion_django/common/services/storage.dart';
+import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/kcolors.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/custom_button.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/const/app_routes.dart';
 import 'package:fashion_django/const/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +23,11 @@ class WelcomeScreen extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 50.h),
-          Image.asset(R.ASSETS_IMAGES_GETSTARTED_PNG),
+          Image.asset(
+            R.ASSETS_IMAGES_GETSTARTED_PNG,
+            height: ScreenUtil().screenWidth * .8,
+            width: ScreenUtil().screenWidth * .8,
+          ),
           SizedBox(height: 30.h),
           Text(AppText.kWelcomeHeader,
               textAlign: TextAlign.center, style: appStyle(24, Kolors.kPrimary, FontWeight.bold)),
@@ -37,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
               onTap: () {
                 ///TODO
                 Storage().setBool("firstOpen", true);
-                context.go("/home");
+                context.go(AppRoutes.home);
               },
               btnHeight: 35,
               radius: 20,
@@ -50,7 +56,8 @@ class WelcomeScreen extends StatelessWidget {
               TextButton(
                   onPressed: () {
                     //Navigate to login page
-                    context.push("/login");
+                    // context.push("/login");
+                    router.push(AppRoutes.login);
                   },
                   child: const Text("Sign In", style: TextStyle(fontSize: 12, color: Colors.blue)))
             ],

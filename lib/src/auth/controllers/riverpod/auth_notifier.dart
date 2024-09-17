@@ -76,7 +76,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         final profile = profileModelFromJson(res.body);
         state = state.copyWith(isLoggedIn: true, currentUser: profile);
         if (context != null) {
-          context.go('/home'); // یا صفحه‌ای که می‌خواهید کاربر به آن هدایت شود
+          context.go('/home');
         }
       } else {
         showErrorPopup(context ?? context!, 'Failed to fetch user details.', null, null);

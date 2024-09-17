@@ -1,7 +1,9 @@
 import 'package:fashion_django/common/services/storage.dart';
+import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/const/resource.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
+import '../../const/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,12 +19,12 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigator();
   }
 
-  _navigator() async {
+  Future<void> _navigator() async {
     Future.delayed(const Duration(seconds: 3), () {
       if (Storage().getBool('firstOpen') == null) {
-        GoRouter.of(context).go("/onboarding");
+        router.go(AppRoutes.onboarding);
       } else {
-        GoRouter.of(context).go("/home");
+        router.go(AppRoutes.home);
       }
     });
   }

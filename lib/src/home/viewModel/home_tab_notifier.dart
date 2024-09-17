@@ -1,18 +1,18 @@
-import 'package:fashion_django/common/utils/enums.dart';
-import 'package:flutter/material.dart';
+import 'package:fashion_django/src/home/models/home_tab_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeTabNotifier with ChangeNotifier {
-  QueryType queryType = QueryType.all;
-  String _index = "All";
-  String get index => _index;
+import '../../../common/utils/enums.dart';
+
+class HomeTabNotifier2 extends StateNotifier<HomeTabModel> {
+  HomeTabNotifier2() : super(HomeTabModel.empty());
 
   void setQueryType(QueryType q) {
-    queryType = q;
+    state = state.copyWith(queryType: q);
   }
 
   void setIndex(String newIndex) {
-    if (_index != newIndex) {
-      _index = newIndex;
+    if (state.index != newIndex) {
+      state = state.copyWith(index: newIndex);
 
       switch (newIndex) {
         case "All":
@@ -37,7 +37,8 @@ class HomeTabNotifier with ChangeNotifier {
           setQueryType(QueryType.all);
           break;
       }
-      notifyListeners();
     }
   }
 }
+
+final homeTabNotifier = StateNotifierProvider<HomeTabNotifier2, HomeTabModel>((ref) => HomeTabNotifier2());

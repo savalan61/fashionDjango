@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:fashion_django/src/home/controllers/home_tabs_notifier.dart';
+import 'package:fashion_django/src/home/viewModel/home_tab_notifier.dart';
 import 'package:fashion_django/src/home/views/widgets/home_appbar.dart';
 import 'package:fashion_django/src/home/views/widgets/home_categories_list.dart';
 import 'package:fashion_django/src/home/views/widgets/home_header.dart';
@@ -8,45 +8,45 @@ import 'package:fashion_django/src/home/views/widgets/home_slider.dart';
 import 'package:fashion_django/src/home/views/widgets/home_tabs.dart';
 import 'package:fashion_django/src/products/views/widgets/explore_products.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late final TabController _tabCtrl;
-  int _currentTabIndex = 0;
+class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStateMixin {
+  late final TabController _tabController;
+
   @override
   void initState() {
     super.initState();
-    _tabCtrl = TabController(length: homeTabs.length, vsync: this);
-    _tabCtrl.addListener(_handleSelection);
+    final initialIndex = homeTabs.indexOf(ref.read(homeTabNotifier).index);
+    _tabController = TabController(length: homeTabs.length, vsync: this, initialIndex: initialIndex);
+    _tabController.addListener(_handleTabChange);
   }
 
-  void _handleSelection() {
-    final controller = Provider.of<HomeTabNotifier>(context, listen: false);
-    if (_tabCtrl.indexIsChanging) {
-      setState(() {
-        _currentTabIndex = _tabCtrl.index;
-      });
-      controller.setIndex(homeTabs[_currentTabIndex]);
+  void _handleTabChange() {
+    if (_tabController.indexIsChanging) {
+      final newIndex = homeTabs[_tabController.index];
+      ref.read(homeTabNotifier.notifier).setIndex(newIndex);
     }
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabChange);
+    _tabController.dispose();
     super.dispose();
-    _tabCtrl.removeListener(_handleSelection);
-    _tabCtrl.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final homeTabState = ref.watch(homeTabNotifier);
+
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(110.h), child: HomeAppBar()),
       body: ListView(
@@ -67,15 +67,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           SizedBox(height: 15.h),
 
           /// --------------------------------- Home Tabs -------------------
-          HomeTabs(tabController: _tabCtrl),
+          HomeTabs(tabController: _tabController),
           SizedBox(height: 15.h),
 
           /// --------------------------------- Explore Products -------------------
-          ExploreProducts(homeTabs[_currentTabIndex])
+          ExploreProducts(homeTabState.index),
         ],
       ),
     );
   }
 }
 
-List<String> homeTabs = ["All", "Popular", "Unisex", "Men", "Women", "kids"];
+List<String> homeTabs = ["All", "Popular", "Unisex", "Men", "Women", "Kids"];

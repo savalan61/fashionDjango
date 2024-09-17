@@ -6,8 +6,8 @@ import 'package:fashion_django/common/widgets/back_button.dart';
 import 'package:fashion_django/common/widgets/error_modal.dart';
 import 'package:fashion_django/common/widgets/login_bottom_sheet.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
-import 'package:fashion_django/src/products/controllers/product_notifier.dart';
 import 'package:fashion_django/src/products/models/product_model.dart';
+import 'package:fashion_django/src/products/viewModel/selected_product_notifier.dart';
 import 'package:fashion_django/src/products/views/widgets/product_bottom_bar.dart';
 import 'package:fashion_django/src/products/views/widgets/product_colors_sel.dart';
 import 'package:fashion_django/src/products/views/widgets/product_sizes_selection.dart';
@@ -19,7 +19,6 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // از riverpod استفاده کنید
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:provider/provider.dart' as provider;
 import 'package:readmore/readmore.dart';
 
 import '../../../common/utils/kcolors.dart';
@@ -30,18 +29,11 @@ class ProductScreen extends ConsumerWidget {
 
   final String productId;
 
-  void toggle({required bool isAdded, required WidgetRef ref, required ProductModel prod}) {
-    isAdded
-        ? ref.read(wishListProvider.notifier).removeFromList(prod)
-        : ref.read(wishListProvider.notifier).addToList(prod);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productNotifier = provider.Provider.of<ProductNotifier>(context);
-    ProductModel currentProduct = productNotifier.product!;
-    var wishes = ref.watch(wishListProvider);
-    bool isAdded = ref.watch(wishListProvider.notifier).isInList(productNotifier.product!);
+    // final productNotifier = provider.Provider.of<ProductNotifier>(context);
+    ProductModel currentProduct = ref.watch(selectedProdNotifier).product!;
+    var wishes = ref.watch(wishListNotifierProvider);
     String? accessToken = Storage().getString("accessToken");
     return Scaffold(
       body: CustomScrollView(
@@ -59,11 +51,10 @@ class ProductScreen extends ConsumerWidget {
                 child: GestureDetector(
                   onTap: () {
                     // Handle favorite button tap
-                    toggle(isAdded: isAdded, ref: ref, prod: currentProduct);
                   },
                   child: CircleAvatar(
                     backgroundColor: Kolors.kSecondaryLight,
-                    child: Icon(isAdded ? AntDesign.heart : AntDesign.hearto, color: Kolors.kRed, size: 18),
+                    child: Icon(true ? AntDesign.heart : AntDesign.hearto, color: Kolors.kRed, size: 18),
                   ),
                 ),
               ),
@@ -74,15 +65,15 @@ class ProductScreen extends ConsumerWidget {
                 height: 415.h,
                 child: ImageSlideshow(
                   autoPlayInterval: 15000,
-                  isLoop: productNotifier.product!.imageUrls.length > 1 ? true : false,
+                  isLoop: currentProduct.imageUrls.length > 1 ? true : false,
                   indicatorColor: Kolors.kPrimary,
                   height: 415.h,
                   children: List.generate(
-                    productNotifier.product!.imageUrls.length,
+                    currentProduct.imageUrls.length,
                     (index) => CachedNetworkImage(
                       placeholder: placeholder,
                       errorWidget: errorWidget,
-                      imageUrl: productNotifier.product!.imageUrls[index],
+                      imageUrl: currentProduct.imageUrls[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -104,7 +95,7 @@ class ProductScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ReusableText(
-                    text: productNotifier.product!.clothesType.toUpperCase(),
+                    text: currentProduct.clothesType.toUpperCase(),
                     style: appStyle(13, Kolors.kGray, FontWeight.w600),
                   ),
                   Row(
@@ -112,7 +103,7 @@ class ProductScreen extends ConsumerWidget {
                       Icon(AntDesign.star, color: Kolors.kGold, size: 14),
                       SizedBox(width: 5.w),
                       ReusableText(
-                        text: productNotifier.product!.rating.toStringAsFixed(1),
+                        text: currentProduct.rating.toStringAsFixed(1),
                         style: appStyle(13, Kolors.kGray, FontWeight.normal),
                       ),
                     ],
@@ -127,7 +118,7 @@ class ProductScreen extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: ReusableText(
-                text: productNotifier.product!.title,
+                text: currentProduct.title,
                 style: appStyle(16, Kolors.kDark, FontWeight.w600),
               ),
             ),
@@ -138,7 +129,8 @@ class ProductScreen extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.all(8.h),
               child: ReadMoreText(
-                productNotifier.product!.description,
+                // productNotifier.product!.description,
+                currentProduct.description,
                 trimMode: TrimMode.Line,
                 trimLines: 2,
                 colorClickableText: Colors.pink,
@@ -211,11 +203,11 @@ class ProductScreen extends ConsumerWidget {
         ],
       ),
       bottomNavigationBar: ProductBottomBar(
-        price: productNotifier.product!.price.toStringAsFixed(2),
+        price: currentProduct.price.toStringAsFixed(2),
         onTap: () {
           if (accessToken == null) {
             loginBottomSheet(context);
-          } else if (productNotifier.color == '' || productNotifier.size == '') {
+          } else if ("currentProduct.color == '' || productNotifier.size == ''".isNotEmpty) {
             showErrorPopup(context, AppText.kCartErrorText, 'Error Adding to Cart', true);
           } else {
             // TODO: Handle checkout
