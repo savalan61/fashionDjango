@@ -23,6 +23,7 @@ import 'package:readmore/readmore.dart';
 
 import '../../../common/utils/kcolors.dart';
 import '../../../const/constants.dart';
+import '../../auth/controllers/riverpod/auth_notifier.dart';
 
 class ProductScreen extends ConsumerWidget {
   const ProductScreen({required this.productId, super.key});
@@ -32,15 +33,20 @@ class ProductScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedProduct = ref.watch(selectedProdNotifier);
-    final isWished = ref.watch(wishListNotifierProvider).when(
-          data: (wishListProducts) =>
-              wishListProducts.any((item) => item.product.id.toString() == productId && item.isWished),
-          error: (error, stackTrace) => false,
-          loading: () => false,
-        );
+    // final isWished = ref.watch(wishListNotifierProvider).when(
+    //       data: (wishListProducts) =>
+    //           wishListProducts.any((item) => item.product.id.toString() == productId && item.isWished),
+    //       error: (error, stackTrace) => false,
+    //       loading: () => false,
+    //     );
 
-    ProductModel currentProduct = selectedProduct.product!;
-    String? accessToken = Storage().getString("accessToken");
+    final bool isWished = ref.watch(wishListNotifierProvider).when(
+        data: (data) => data.any((element) => element.product.id.toString() == productId),
+        error: (error, stackTrace) => false,
+        loading: () => false);
+    final ProductModel currentProduct = selectedProduct.product!;
+    final String? accessToken = Storage().getString("accessToken");
+    final isLoggedIn = ref.watch(authNotifierProvider).isLoggedIn;
 
     return Scaffold(
       body: CustomScrollView(
@@ -57,6 +63,11 @@ class ProductScreen extends ConsumerWidget {
                 padding: EdgeInsets.only(right: 16.w),
                 child: GestureDetector(
                   onTap: () {
+                    ///TODO
+                    if (!isLoggedIn) {
+                      loginBottomSheet(context);
+                    }
+
                     // Handle favorite button tap
                     ref.read(wishListNotifierProvider.notifier).toggleWishList(productId);
                   },

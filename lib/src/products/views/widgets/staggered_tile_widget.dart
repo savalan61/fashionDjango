@@ -11,6 +11,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../common/widgets/login_bottom_sheet.dart';
+import '../../../auth/controllers/riverpod/auth_notifier.dart';
+
 class StaggeredTileWidget extends ConsumerWidget {
   const StaggeredTileWidget({
     required this.i,
@@ -27,13 +30,15 @@ class StaggeredTileWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isLoggedIn = ref.watch(authNotifierProvider).isLoggedIn;
+
     ref.watch(wishListNotifierProvider);
     return GestureDetector(
       onTap: () {
-        print("object");
-
-        ref.read(selectedProdNotifier.notifier).setProduct(product);
-        context.push('/product/${product.id}');
+        if (true) {
+          ref.read(selectedProdNotifier.notifier).setProduct(product);
+          context.push('/product/${product.id}');
+        }
       },
       child: Card(
         elevation: 4,
@@ -64,18 +69,23 @@ class StaggeredTileWidget extends ConsumerWidget {
                     top: 10.h,
                     child: GestureDetector(
                       onTap: () async {
-                        try {
-                          final productId = product.id.toString();
-                          await ref.read(wishListNotifierProvider.notifier).toggleWishList(productId);
-                          // Optionally show a message or feedback based on success
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   SnackBar(content: Text(isWished ? 'Removed from wishlist' : 'Added to wishlist')),
-                          // );
-                        } catch (e) {
-                          // Handle error
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Error toggling wish list')),
-                          );
+                        if (isLoggedIn) {
+                          try {
+                            final productId = product.id.toString();
+                            await ref.read(wishListNotifierProvider.notifier).toggleWishList(productId);
+                            // Optionally show a message or feedback based on success
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(content: Text(isWished ? 'Removed from wishlist' : 'Added to wishlist')),
+                            // );
+                          } catch (e) {
+                            // Handle error
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Error toggling wish list')),
+                            );
+                          }
+                        } else {
+                          ///TODO
+                          loginBottomSheet(context);
                         }
                       },
                       child: CircleAvatar(
