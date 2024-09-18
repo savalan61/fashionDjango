@@ -1,7 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_final_locals
-
 import 'package:fashion_django/common/utils/kcolors.dart';
-import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
 import 'package:fashion_django/src/wishList/viewModel/wishlist_notifier.dart';
@@ -10,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import '../../../const/resource.dart';
 import '../../auth/controllers/riverpod/auth_notifier.dart';
 import '../../auth/view/login_screen.dart';
 import '../../products/views/widgets/staggered_tile_widget.dart';
@@ -20,10 +16,10 @@ class WishlistScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool autState = ref.watch(authNotifierProvider).isLoggedIn;
+    final isLoggedIn = ref.watch(authNotifierProvider).isLoggedIn;
     final wishListState = ref.watch(wishListNotifierProvider);
 
-    if (!autState) {
+    if (!isLoggedIn) {
       return const LoginScreen();
     }
 
@@ -32,13 +28,13 @@ class WishlistScreen extends ConsumerWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: ReusableText(
-            text: AppText.kWishlist,
+            text: 'Wishlist',
             style: appStyle(16, Kolors.kPrimary, FontWeight.bold),
           ),
           centerTitle: true,
         ),
         body: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 2.h),
@@ -71,8 +67,8 @@ class WishlistScreen extends ConsumerWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => Center(child: Image.asset(R.ASSETS_IMAGES_EMPTY_PNG)),
-      loading: () => Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => const Center(child: Text('Something went wrong')),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

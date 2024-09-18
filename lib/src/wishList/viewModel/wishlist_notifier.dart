@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../products/models/product_model.dart';
+import '../models/wishList_product.dart';
 import '../repository/wishList_repository.dart';
 
 class WishListNotifier extends StateNotifier<AsyncValue<List<WishListProduct>>> {
@@ -10,16 +10,12 @@ class WishListNotifier extends StateNotifier<AsyncValue<List<WishListProduct>>> 
 
   final WishListRepository _repository;
 
-  // Load the wish list from the repository
   Future<void> _loadWishList() async {
+    state = const AsyncValue.loading();
     try {
       final wishList = await _repository.fetchWishList();
-      // Map to WishListProduct
       final wishListProducts = wishList.map((product) {
-        return WishListProduct(
-          product: product,
-          isWished: true, // Assuming you receive information if the product is wished
-        );
+        return WishListProduct(product: product, isWished: true);
       }).toList();
       state = AsyncValue.data(wishListProducts);
     } catch (e, stackTrace) {
@@ -27,13 +23,11 @@ class WishListNotifier extends StateNotifier<AsyncValue<List<WishListProduct>>> 
     }
   }
 
-  // Toggle the wish list status for a product
   Future<void> toggleWishList(String productId) async {
     state = const AsyncValue.loading();
     try {
-      final message = await _repository.toggleWishList(productId);
-      // Refresh the wish list after toggling
-      _loadWishList();
+      await _repository.toggleWishList(productId);
+      _loadWishList(); // Refresh wishlist
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
@@ -45,22 +39,3 @@ final wishListNotifierProvider = StateNotifierProvider<WishListNotifier, AsyncVa
   final repository = WishListRepository(); // Adjust base URL
   return WishListNotifier(repository);
 });
-
-// wish_list_product_model.dart
-
-class WishListProduct {
-  WishListProduct({
-    required this.product,
-    required this.isWished,
-  });
-
-  factory WishListProduct.fromJson(Map<String, dynamic> json) {
-    return WishListProduct(
-      product: ProductModel.fromJson(json['product']),
-      isWished: json['is_wished'] ?? false, // Adjust based on API response
-    );
-  }
-
-  final ProductModel product;
-  final bool isWished;
-}
