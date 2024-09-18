@@ -30,6 +30,8 @@ class StaggeredTileWidget extends ConsumerWidget {
     ref.watch(wishListNotifierProvider);
     return GestureDetector(
       onTap: () {
+        print("object");
+
         ref.read(selectedProdNotifier.notifier).setProduct(product);
         context.push('/product/${product.id}');
       },
@@ -66,9 +68,9 @@ class StaggeredTileWidget extends ConsumerWidget {
                           final productId = product.id.toString();
                           await ref.read(wishListNotifierProvider.notifier).toggleWishList(productId);
                           // Optionally show a message or feedback based on success
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(isWished ? 'Removed from wishlist' : 'Added to wishlist')),
-                          );
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(content: Text(isWished ? 'Removed from wishlist' : 'Added to wishlist')),
+                          // );
                         } catch (e) {
                           // Handle error
                           ScaffoldMessenger.of(context).showSnackBar(

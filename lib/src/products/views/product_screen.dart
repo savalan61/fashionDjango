@@ -16,7 +16,7 @@ import 'package:fashion_django/src/wishList/viewModel/wishlist_notifier.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // از riverpod استفاده کنید
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:readmore/readmore.dart';
@@ -31,10 +31,17 @@ class ProductScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final productNotifier = provider.Provider.of<ProductNotifier>(context);
-    ProductModel currentProduct = ref.watch(selectedProdNotifier).product!;
-    var wishes = ref.watch(wishListNotifierProvider);
+    final selectedProduct = ref.watch(selectedProdNotifier);
+    final isWished = ref.watch(wishListNotifierProvider).when(
+          data: (wishListProducts) =>
+              wishListProducts.any((item) => item.product.id.toString() == productId && item.isWished),
+          error: (error, stackTrace) => false,
+          loading: () => false,
+        );
+
+    ProductModel currentProduct = selectedProduct.product!;
     String? accessToken = Storage().getString("accessToken");
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -51,10 +58,15 @@ class ProductScreen extends ConsumerWidget {
                 child: GestureDetector(
                   onTap: () {
                     // Handle favorite button tap
+                    ref.read(wishListNotifierProvider.notifier).toggleWishList(productId);
                   },
                   child: CircleAvatar(
                     backgroundColor: Kolors.kSecondaryLight,
-                    child: Icon(true ? AntDesign.heart : AntDesign.hearto, color: Kolors.kRed, size: 18),
+                    child: Icon(
+                      isWished ? AntDesign.heart : AntDesign.hearto,
+                      color: Kolors.kRed,
+                      size: 18,
+                    ),
                   ),
                 ),
               ),
@@ -129,7 +141,6 @@ class ProductScreen extends ConsumerWidget {
             child: Padding(
               padding: EdgeInsets.all(8.h),
               child: ReadMoreText(
-                // productNotifier.product!.description,
                 currentProduct.description,
                 trimMode: TrimMode.Line,
                 trimLines: 2,

@@ -47,6 +47,6 @@ class WishListNotifier extends StateNotifier<AsyncValue<List<WishListProduct>>> 
 }
 
 final wishListNotifierProvider = StateNotifierProvider<WishListNotifier, AsyncValue<List<WishListProduct>>>((ref) {
-  final repository = WishListRepository(); // تنظیم URL پایه
+  final repository = WishListRepository();
   return WishListNotifier(repository);
 });
