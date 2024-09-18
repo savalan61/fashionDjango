@@ -4,17 +4,18 @@ class ProductModel {
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json['id'],
         title: json['title'],
-        price: json['price'],
-        description: json['description'],
-        isFeatured: json['isFeatured'],
-        clothesType: json['clothesType'],
-        rating: json['rating']?.toDouble(),
+        price: (json['price'] != null) ? json['price'].toDouble() : 0.0,
+        description: json['description'] ?? '',
+        isFeatured: json['isFeatured'] ?? false,
+        clothesType: json['clothesType'] ?? '',
+        rating: (json['rating'] != null) ? json['rating'].toDouble() : 0.0,
+        // Handling null rating
         colors: List<String>.from(json['colors'].map((x) => x)),
         imageUrls: List<String>.from(json['imageUrls'].map((x) => x)),
         sizes: List<String>.from(json['sizes'].map((x) => x)),
         createdAt: DateTime.parse(json['created_at']),
-        category: json['category'],
-        brand: json['brand'],
+        category: json['category'] ?? 0,
+        brand: json['brand'] ?? 0,
       );
 
   ProductModel({

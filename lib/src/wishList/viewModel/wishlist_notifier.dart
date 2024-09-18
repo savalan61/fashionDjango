@@ -1,3 +1,4 @@
+import 'package:fashion_django/src/products/models/product_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/wishList_product.dart';
@@ -11,9 +12,8 @@ class WishListNotifier extends StateNotifier<AsyncValue<List<WishListProduct>>> 
   final WishListRepository _repository;
 
   Future<void> _loadWishList() async {
-    state = const AsyncValue.loading();
     try {
-      final wishList = await _repository.fetchWishList();
+      final List<ProductModel> wishList = await _repository.fetchWishList();
       final wishListProducts = wishList.map((product) {
         return WishListProduct(product: product, isWished: true);
       }).toList();
@@ -24,18 +24,29 @@ class WishListNotifier extends StateNotifier<AsyncValue<List<WishListProduct>>> 
   }
 
   Future<void> toggleWishList(String productId) async {
-    state = const AsyncValue.loading();
+    state = state.whenData((wishList) {
+      return wishList.map((wishListProduct) {
+        if (wishListProduct.product.id == int.parse(productId)) {
+          return WishListProduct(
+            product: wishListProduct.product,
+            isWished: !wishListProduct.isWished,
+          );
+        }
+        return wishListProduct;
+      }).toList();
+    });
+
     try {
       await _repository.toggleWishList(productId);
-      _loadWishList(); // Refresh wishlist
+      // Refresh the wishlist after toggling
+      _loadWishList();
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
 }
 
-// Provider for managing wish list state with StateNotifier
 final wishListNotifierProvider = StateNotifierProvider<WishListNotifier, AsyncValue<List<WishListProduct>>>((ref) {
-  final repository = WishListRepository(); // Adjust base URL
+  final repository = WishListRepository(); // تنظیم URL پایه
   return WishListNotifier(repository);
 });

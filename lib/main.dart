@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          routerConfig: router, // مطمئن شوید که router به درستی تعریف شده است
+          routerConfig: router,
         );
       },
       child: const SplashScreen(),

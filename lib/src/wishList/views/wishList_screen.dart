@@ -17,12 +17,11 @@ class WishlistScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoggedIn = ref.watch(authNotifierProvider).isLoggedIn;
-    final wishListState = ref.watch(wishListNotifierProvider);
 
     if (!isLoggedIn) {
       return const LoginScreen();
     }
-
+    final wishListState = ref.watch(wishListNotifierProvider);
     return wishListState.when(
       data: (wishListProducts) => Scaffold(
         appBar: AppBar(
@@ -54,9 +53,9 @@ class WishlistScreen extends ConsumerWidget {
                         product: wishListProduct.product,
                         isWished: wishListProduct.isWished,
                         onTap: () {
-                          ref
-                              .read(wishListNotifierProvider.notifier)
-                              .toggleWishList(wishListProduct.product.id.toString());
+                          // ref
+                          //     .read(wishListNotifierProvider.notifier)
+                          //     .toggleWishList(wishListProduct.product.id.toString());
                         },
                       ),
                     );

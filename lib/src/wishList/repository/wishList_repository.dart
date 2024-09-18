@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
 import '../../../common/services/storage.dart';
@@ -18,8 +16,8 @@ class WishListRepository {
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((item) => ProductModel.fromJson(item)).toList();
+      final List<ProductModel> data = productModelFromJson(response.body);
+      return data;
     } else {
       throw Exception('Failed to load wish list');
     }
