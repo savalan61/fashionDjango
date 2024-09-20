@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fashion_django/common/services/storage.dart';
+import 'package:fashion_django/common/utils/app_routes.dart';
 import 'package:fashion_django/common/utils/kstrings.dart';
 import 'package:fashion_django/common/widgets/app_style.dart';
 import 'package:fashion_django/common/widgets/back_button.dart';
 import 'package:fashion_django/common/widgets/error_modal.dart';
 import 'package:fashion_django/common/widgets/login_bottom_sheet.dart';
 import 'package:fashion_django/common/widgets/reusable_text.dart';
+import 'package:fashion_django/const/app_routes.dart';
+import 'package:fashion_django/src/cart/ViewModel/cart_provider.dart';
+import 'package:fashion_django/src/cart/models/cart_create_model.dart';
 import 'package:fashion_django/src/products/models/product_model.dart';
 import 'package:fashion_django/src/products/viewModel/selected_product_notifier.dart';
 import 'package:fashion_django/src/products/views/widgets/product_bottom_bar.dart';
@@ -30,21 +34,21 @@ class ProductScreen extends ConsumerWidget {
 
   final String productId;
 
+  Future<void> addToCartAndFetchCount(CartCreateModel newCart, WidgetRef ref) async {
+    await ref.read(cartNotifierProvider.notifier).addToCart(newCart);
+    await ref.read(cartNotifierProvider.notifier).fetchCartCount();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedProduct = ref.watch(selectedProdNotifier);
-    // final isWished = ref.watch(wishListNotifierProvider).when(
-    //       data: (wishListProducts) =>
-    //           wishListProducts.any((item) => item.product.id.toString() == productId && item.isWished),
-    //       error: (error, stackTrace) => false,
-    //       loading: () => false,
-    //     );
 
     final bool isWished = ref.watch(wishListNotifierProvider).when(
         data: (data) => data.any((element) => element.product.id.toString() == productId),
         error: (error, stackTrace) => false,
         loading: () => false);
     final ProductModel currentProduct = selectedProduct.product!;
+
     final String? accessToken = Storage().getString("accessToken");
     final isLoggedIn = ref.watch(authNotifierProvider).isLoggedIn;
 
@@ -186,7 +190,7 @@ class ProductScreen extends ConsumerWidget {
             ),
           ),
           SliverToBoxAdapter(child: SizedBox(height: 10.h)),
-          SliverToBoxAdapter(child: ProductSizesWidget()),
+          const SliverToBoxAdapter(child: ProductSizesWidget()),
           SliverToBoxAdapter(child: SizedBox(height: 15.h)),
 
           // Select Color
@@ -200,7 +204,7 @@ class ProductScreen extends ConsumerWidget {
             ),
           ),
           SliverToBoxAdapter(child: SizedBox(height: 10.h)),
-          SliverToBoxAdapter(child: ProductColorsWidget()),
+          const SliverToBoxAdapter(child: ProductColorsWidget()),
           SliverToBoxAdapter(child: SizedBox(height: 15.h)),
 
           SliverToBoxAdapter(
@@ -229,10 +233,16 @@ class ProductScreen extends ConsumerWidget {
         onTap: () {
           if (accessToken == null) {
             loginBottomSheet(context);
-          } else if ("currentProduct.color == '' || productNotifier.size == ''".isNotEmpty) {
+          } else if (selectedProduct.color == '' || selectedProduct.size.isEmpty) {
             showErrorPopup(context, AppText.kCartErrorText, 'Error Adding to Cart', true);
           } else {
             // TODO: Handle checkout
+            final CartCreateModel newCart = CartCreateModel(
+                color: selectedProduct.color,
+                size: selectedProduct.size,
+                product: selectedProduct.product!.id,
+                quantity: 1);
+            addToCartAndFetchCount(newCart, ref);
             if (kDebugMode) {
               print('Go for checkout');
             }

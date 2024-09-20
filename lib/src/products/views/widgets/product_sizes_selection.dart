@@ -17,7 +17,7 @@ class ProductSizesWidget extends ConsumerWidget {
     final List<String> sizes = prodState.product?.sizes ?? [];
     final String? selectedSize = prodState.size;
 
-    Widget _buildSizeOption(String size) {
+    Widget buildSizeOption(String size) {
       final bool isSelected = size == selectedSize;
       final Color backgroundColor = isSelected ? Kolors.kPrimary : Kolors.kGrayLight;
 
@@ -33,7 +33,7 @@ class ProductSizesWidget extends ConsumerWidget {
           ),
           child: Center(
             child: ReusableText(
-              text: size,
+              text: getSizeLabel(size),
               style: appStyle(20, Kolors.kWhite, FontWeight.bold),
             ),
           ),
@@ -45,8 +45,25 @@ class ProductSizesWidget extends ConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: sizes.map(_buildSizeOption).toList(),
+        children: sizes.map(buildSizeOption).toList(),
       ),
     );
+  }
+}
+
+String getSizeLabel(String size) {
+  switch (size) {
+    case "8":
+      return 'S';
+    case "9":
+      return 'M'; // 9 = M
+    case "10":
+      return 'L'; // 10 = L
+    case "11":
+      return 'XL'; // 11 = XL
+    case "12":
+      return 'XXL'; // 12 = XXL
+    default:
+      return 'Unknown Size';
   }
 }

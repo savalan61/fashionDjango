@@ -8,11 +8,13 @@ class SelectedProdState extends StateNotifier<ProductState> {
   void setProduct(ProductModel p) => state = state.copyWith(product: p);
 
   void setSize(String s) {
-    state.size == "" ? state = state.copyWith(size: s) : state = state.copyWith(size: "");
+    // state.size == "" ? state = state.copyWith(size: s) : state = state.copyWith(size: "");
+    state = state.copyWith(size: s);
   }
 
   void setColor(String c) {
-    state.color == "" ? state = state.copyWith(color: c) : state = state.copyWith(color: "");
+    // state.color == "" ? state = state.copyWith(color: c) : state = state.copyWith(color: "");
+    state = state.copyWith(color: c);
   }
 }
 

@@ -17,14 +17,14 @@ class ProductColorsWidget extends ConsumerWidget {
     final List<String> colors = prodState.product!.colors;
     final String? selectedColor = prodState.color;
 
-    Widget _buildColorOption(String color) {
+    Widget buildColorOption(String color) {
       final bool isSelected = color == selectedColor;
       final Color borderColor = isSelected ? Kolors.kPrimary : Kolors.kPrimary;
       final double borderWidth = isSelected ? 3 : 0.1;
       final Color textColor = color == "white" ? Colors.black : Kolors.kWhite;
       final Color backgroundColor = getColorFromString(color);
 
-      return InkWell(
+      return GestureDetector(
         onTap: () => ref.read(selectedProdNotifier.notifier).setColor(color),
         child: Container(
           margin: EdgeInsets.only(right: 20.w),
@@ -49,7 +49,7 @@ class ProductColorsWidget extends ConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: colors.map(_buildColorOption).toList(),
+        children: colors.map(buildColorOption).toList(),
       ),
     );
   }

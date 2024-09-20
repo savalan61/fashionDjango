@@ -1,4 +1,5 @@
 import 'package:fashion_django/common/utils/kcolors.dart';
+import 'package:fashion_django/src/cart/ViewModel/cart_provider.dart';
 import 'package:fashion_django/src/cart/views/cart_screen.dart';
 import 'package:fashion_django/src/entrypoint/viewModel/tabs_notifier.dart';
 import 'package:fashion_django/src/home/views/home_screen.dart';
@@ -22,15 +23,15 @@ class AppEntryPoint extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the bottomTabNotifierProvider to get the selected tab index
     final selectedTab = ref.watch(bottomTabNotifier);
+    var cartState = ref.watch(cartNotifierProvider);
+
+    // Check if cartCountModel is null to prevent any errors
+    int cartCount = cartState.cartCountModel?.cartItemsCount ?? 0;
 
     return Scaffold(
-      body: Stack(
-        children: List.generate(pageList.length, (index) {
-          return IndexedStack(
-            index: selectedTab,
-            children: pageList,
-          );
-        }),
+      body: IndexedStack(
+        index: selectedTab,
+        children: pageList,
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedFontSize: 12,
@@ -57,7 +58,7 @@ class AppEntryPoint extends ConsumerWidget {
           ),
           BottomNavigationBarItem(
             icon: Badge(
-              label: const Text("3"),
+              label: cartCount > 0 ? Text(cartCount.toString()) : null, // Only show the badge if cartCount > 0
               child: Icon(MaterialCommunityIcons.shopping_outline,
                   color: selectedTab == 2 ? Kolors.kPrimary : null, size: 24),
             ),

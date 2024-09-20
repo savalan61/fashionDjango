@@ -50,7 +50,7 @@ class ProductBottomBar extends StatelessWidget {
                         size: 16.w,
                       ),
                       SizedBox(width: 8.w),
-                      ReusableText(text: "Checkout", style: appStyle(14, Kolors.kWhite, FontWeight.bold))
+                      ReusableText(text: "Add To Cart", style: appStyle(14, Kolors.kWhite, FontWeight.bold))
                     ],
                   ))
             ],

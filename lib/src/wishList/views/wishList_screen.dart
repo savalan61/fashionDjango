@@ -71,3 +71,123 @@ class WishlistScreen extends ConsumerWidget {
     );
   }
 }
+// class WishlistScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text('Hesabım'),
+//           actions: [
+//             Icon(Icons.notifications),
+//             SizedBox(width: 16),
+//             Icon(Icons.more_vert),
+//           ],
+//         ),
+//         body: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             children: [
+//               // Search bar and avatar
+//               Row(
+//                 children: [
+//                   CircleAvatar(
+//                     backgroundColor: Colors.blueAccent,
+//                     child: Icon(Icons.person),
+//                   ),
+//                   SizedBox(width: 16),
+//                   Expanded(
+//                     child: TextField(
+//                       decoration: InputDecoration(
+//                         hintText: 'İşCep\'te Ara',
+//                         border: OutlineInputBorder(
+//                           borderRadius: BorderRadius.circular(8),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 16),
+//
+//               // Account info
+//               Card(
+//                 elevation: 2,
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(16.0),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text('Uydukent-Kurtköy/İstanbul', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+//                       SizedBox(height: 8),
+//                       Text('TR11 0006 4000 0011 3550 1419 02'),
+//                       SizedBox(height: 8),
+//                       Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                         children: [
+//                           Text('Bakiye', style: TextStyle(fontSize: 16)),
+//                           Text('485,70 TL', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+//                         ],
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//
+//               SizedBox(height: 16),
+//
+//               // Recommendations
+//               Card(
+//                 elevation: 2,
+//                 child: ListTile(
+//                   leading: Icon(Icons.watch_later),
+//                   title: Text('Günün özeti hazır! İncelemek ister misiniz?'),
+//                   trailing: TextButton(onPressed: () {}, child: Text('İNCELE')),
+//                 ),
+//               ),
+//
+//               SizedBox(height: 16),
+//
+//               // Quick shortcuts
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                 children: [
+//                   ShortcutWidget(icon: Icons.receipt, label: 'Kayıtlı Faturalarım'),
+//                   ShortcutWidget(icon: Icons.repeat, label: 'İşlem Tekrarla'),
+//                   ShortcutWidget(icon: Icons.receipt_long, label: 'Dekontlarım'),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//         bottomNavigationBar: BottomNavigationBar(
+//           items: [
+//             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Ana Sayfa'),
+//             BottomNavigationBarItem(icon: Icon(Icons.sync_alt), label: 'Para Aktar'),
+//             BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'İşlemler'),
+//             BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Ödemeler'),
+//             BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Harcamalar'),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// class ShortcutWidget extends StatelessWidget {
+//   final IconData icon;
+//   final String label;
+//
+//   ShortcutWidget({required this.icon, required this.label});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Icon(icon, size: 32),
+//         SizedBox(height: 8),
+//         Text(label, style: TextStyle(fontSize: 12)),
+//       ],
+//     );
+//   }
+// }
