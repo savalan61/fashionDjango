@@ -1,3 +1,4 @@
+Developed a modern fashion app utilizing Flutter and Dart, focusing on seamless user experiences through effective state management with Riverpod. Integrated a robust backend using Django and Django REST Framework for efficient API communication. The app features a clean, user-friendly interface, secure payment processing via Stripe, and a modular code structure to facilitate future scalability and maintenance. For the admin panel, I employed Jazmin to enhance administrative functionalities and improve user management. This project showcases my ability to manage end-to-end development processes, emphasizing both frontend aesthetics and backend functionality.
 
 
 <div style="display: flex; justify-content: space-around;">
